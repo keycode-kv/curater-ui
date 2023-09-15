@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(3),
-    width: '80%', // Default width for mobile devices
+    width: '60%', // Default width for mobile devices
     [theme.breakpoints.up('md')]: {
       width: '30%', // 30% width for devices with screen width >= 960px
     },
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     '& label.Mui-focused': {
       transform: 'translate(0, 0)', // Adjust the X and Y translation as needed
     },
-    width: '70%',
+    width: '90%',
     paddingBottom: 10,
   },
   submitButton: {
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#4E157A', // Text color for selected button
     textTransform: 'none',
     font: 'Roboto',
-    fontSize: '36px',
+    fontSize: '20px',
     fontWeight: 600,
 
   },
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(78,21,122,0.5)', // Text color for selected button
     textTransform: 'none',
     font: 'Roboto',
-    fontSize: 36,
+    fontSize: 20,
     fontWeight: 400,
   },
   separator: {
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems:'center',
     paddingTop:10,
     color:'#414141',
-    fontSize:28
+    fontSize:15
   }
 }));
 
