@@ -1,0 +1,33 @@
+.login-container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-section
+{
+    width:30%;
+    border-radius: 8px;
+    border: 5px solid #4E157A;
+    background-color: #FFF;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginform-container
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input
+{
+    border-radius: 25px;
+    background-color: #D39CFF;
+    height: 80px;
+}
+
