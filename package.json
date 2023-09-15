@@ -13,6 +13,7 @@
     "@use-gesture/react": "^10.2.27",
     "ahooks": "^3.7.8",
     "axios": "^1.5.0",
+    "copy-to-clipboard": "^3.3.3",
     "i": "^0.3.7",
     "npm": "^10.1.0",
     "qs": "^6.11.2",

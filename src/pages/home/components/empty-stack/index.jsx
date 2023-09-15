@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
     emptyText: {
       color: '#F0F0F0',
-      fontSize: '28px',
+      fontSize: '22px',
       fontStyle: 'italic',
       fontWeight: 300,
       textAlign: 'center',
