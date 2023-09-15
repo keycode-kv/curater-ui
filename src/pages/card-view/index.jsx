@@ -1,4 +1,4 @@
-import { Button, Grid, Hidden, IconButton, Rating } from '@mui/material';
+import { Button, Grid, Hidden, IconButton, Menu, MenuItem, Rating } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CloseIcon from '@mui/icons-material/Close';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
@@ -23,6 +23,15 @@ const btnStyles = {
 const MobileCardView = ({ card, comments }) => {
   const navigate = useNavigate();
   const classes = useMobileCardViewStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -32,7 +41,28 @@ const MobileCardView = ({ card, comments }) => {
           <CloseIcon sx={{ color: "#414141" }} />
         </IconButton>
         <CuratorLogoDarkIcon />
-        <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
+        <IconButton
+          id="basic-button"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
+          <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Read Later</MenuItem>
+          <MenuItem onClick={handleClose}>Collection 1</MenuItem>
+          <MenuItem onClick={handleClose}>Collection 2</MenuItem>
+        </Menu>
       </div>
       <div className={classes.cardContent}>
         <div className={classes.cardContentHeader}>{card.title}</div>
