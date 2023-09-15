@@ -10,6 +10,16 @@ const apiClient = axios.create({
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });
 
+apiClient.interceptors.request.use(
+  config => {
+    config.headers['Authorization'] = `${localStorage.getItem('auth_token')}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
 apiClient.interceptors.response.use(
   (resp) => {
     return resp.data;

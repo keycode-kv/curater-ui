@@ -19,6 +19,8 @@ import {
   MenuPropsSxProps,
   SelectSxProps,
 } from "./styles";
+import { useRequest } from "ahooks";
+import { fetchCollectionsUsingGet } from "../../services/cards";
 
 const mockData = [
   {
@@ -60,6 +62,16 @@ const mockData = [
 const SavedCardsPage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  // eslint-disable-next-line no-unused-vars
+  const { run } = useRequest(fetchCollectionsUsingGet, {
+    onSuccess: (res) => {
+      console.log(res);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const [item, setItem] = useState("Read Later");
   const [searchInput, setSearchInput] = useState("");
