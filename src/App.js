@@ -6,6 +6,7 @@ import Home from './pages/home';
 import Login from './pages/login';
 
 import './App.css';
+import CardView from './pages/card-view';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
      fallback={<div>error boundary here</div>}
     >
       <Routes>
+        <Route path='card/:cardId' element={<CardView />} />
         <Route path='card' element={<Card />} />
         <Route path='login/*' element={<Login />} />
         <Route path="*" element={<Home />} />
