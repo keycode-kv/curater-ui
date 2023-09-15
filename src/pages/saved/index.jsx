@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   FormControl,
@@ -9,9 +9,15 @@ import {
   TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRequest } from "ahooks";
 
+import { useTagsStore } from "stores/tags";
 import MainCard from "../../components/main-card";
 import MainHeader from "../../components/main-header";
+import {
+  fetchCardsListUsingGet,
+  fetchCollectionsUsingGet,
+} from "../../services/cards";
 
 import {
   useStyles,
@@ -19,74 +25,70 @@ import {
   MenuPropsSxProps,
   SelectSxProps,
 } from "./styles";
-import { useRequest } from "ahooks";
-import { fetchCollectionsUsingGet } from "../../services/cards";
-
-const mockData = [
-  {
-    id: "id_123",
-    title: "heading",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Metus cras at odio ante nulla ac.",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 1,
-  },
-  {
-    id: "id_1444",
-    title: "heading",
-    content: "gist of the newsletter",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 2,
-  },
-  {
-    id: "id_1234",
-    title: "heading",
-    content: "gist of the newsletter",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 3,
-  },
-];
 
 const SavedCardsPage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  // eslint-disable-next-line no-unused-vars
-  const { run } = useRequest(fetchCollectionsUsingGet, {
+  const { selectedTags, setSelectedTags } = useTagsStore();
+
+  const [item, setItem] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [collections, setCollections] = useState([]);
+
+  const { run: getCollections } = useRequest(fetchCollectionsUsingGet, {
+    manual: true,
     onSuccess: (res) => {
-      console.log(res);
+      setCollections(res?.collections);
+      setItem(res?.collections[0].id);
+      getCardsList({ type: "saved", collection: res?.collections[0].id });
     },
     onError: (err) => {
       console.log(err);
     },
   });
 
-  const [item, setItem] = useState("Read Later");
-  const [searchInput, setSearchInput] = useState("");
+  const { run: getCardsList, data: cardsList } = useRequest(
+    fetchCardsListUsingGet,
+    {
+      manual: true,
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   const handleItemSelect = (event) => {
-    setItem(event.target.value);
+    setSelectedTags({});
+    setSearchInput("");
+    const { value } = event.target;
+    setItem(value);
+    getCardsList({ collection: value, type: "saved" });
   };
 
   const handleValueChange = (e) => {
     setSearchInput(e.target.value);
+    getCardsList({
+      type: "saved",
+      search: e.target.value,
+      collection: item,
+      tags: selectedTags,
+    });
   };
+
+  useEffect(() => {
+    getCollections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid item className={classes.container}>
-      <MainHeader />
+      <MainHeader
+        getCardsList={getCardsList}
+        type="saved"
+        collection={item}
+        search={searchInput}
+      />
       <Grid item className={classes.contentWrapper} xs={12}>
         <Grid className={classes.cardHeader} xs={12}>
           <FormControl variant="outlined" className={classes.formControl}>
@@ -102,8 +104,8 @@ const SavedCardsPage = () => {
                 },
               }}
             >
-              {["Read Later", "Collection 1", "Collection 2"].map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
+              {collections.map((collection) => (
+                <MenuItem value={collection.id}>{collection.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -120,10 +122,11 @@ const SavedCardsPage = () => {
             placeholder="Search Titles"
             variant="outlined"
             onChange={handleValueChange}
+            autoComplete="off"
           />
         </Grid>
         <Grid className={classes.cardContainer}>
-          {mockData.map((item) => (
+          {cardsList?.cards?.map((item) => (
             <div onClick={() => navigate(`/card/${item.id}`)}>
               <MainCard item={item} isMainCard={false} />
             </div>

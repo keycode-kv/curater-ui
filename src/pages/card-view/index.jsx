@@ -1,18 +1,34 @@
-import { Button, Grid, Hidden, IconButton, Menu, MenuItem, Rating } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import CloseIcon from '@mui/icons-material/Close';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import SendIcon from '@mui/icons-material/Send';
-import { makeStyles } from '@mui/styles';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import {
+  Button,
+  Grid,
+  Hidden,
+  IconButton,
+  Menu,
+  MenuItem,
+  Rating,
+} from "@mui/material";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import CloseIcon from "@mui/icons-material/Close";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import SendIcon from "@mui/icons-material/Send";
+import { makeStyles } from "@mui/styles";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { ReactComponent as StarIcon } from "../../assets/rating-star.svg";
 import { ReactComponent as CuratorLogoDarkIcon } from "../../assets/curater-logo-dark.svg";
 import dummyData from "./dummy-data";
 import { formatTimestamp } from "../../utils/datetime-utils";
-import { useRequest } from 'ahooks';
-import { addCommentByContentId, archiveCardById, fetchCardById, fetchCollections, fetchCommentsByContentId, rateCardById, saveCardById } from 'services/cards';
+import { useRequest } from "ahooks";
+import {
+  addCommentByContentId,
+  archiveCardById,
+  fetchCardById,
+  fetchCollectionsUsingGet,
+  fetchCommentsByContentId,
+  rateCardById,
+  saveCardById,
+} from "services/cards";
 
 const btnStyles = {
   borderRadius: 56,
@@ -50,10 +66,10 @@ const MobileCardView = ({
   const handleSave1 = (collectionId) => {
     handleSave(collectionId);
     handleClose();
-  }
+  };
   const handleKeyPress = (e) => {
     // Check if the Enter key was pressed (keycode 13 or key value "Enter")
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       // Trigger your action here
       handlePostComment();
     }
@@ -61,20 +77,22 @@ const MobileCardView = ({
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <IconButton
-          onClick={() => navigate('/', { replace: true})}
-        >
+        <IconButton onClick={() => navigate("/", { replace: true })}>
           <CloseIcon sx={{ color: "#414141" }} />
         </IconButton>
         <CuratorLogoDarkIcon />
         <IconButton
           id="basic-button"
-          aria-controls={open ? 'basic-menu' : undefined}
+          aria-controls={open ? "basic-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
-          {saved ? <BookmarkIcon sx={{ color: "#4E157A" }} /> : <BookmarkBorderIcon sx={{ color: "#4E157A" }} />}
+          {saved ? (
+            <BookmarkIcon sx={{ color: "#4E157A" }} />
+          ) : (
+            <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
+          )}
         </IconButton>
         <Menu
           id="basic-menu"
@@ -82,14 +100,17 @@ const MobileCardView = ({
           open={open}
           onClose={handleClose}
           MenuListProps={{
-            'aria-labelledby': 'basic-button',
+            "aria-labelledby": "basic-button",
           }}
         >
-          {
-            collections.map((collection) => (
-              <MenuItem key={collection.id} onClick={() => handleSave1(collection.id)}>{collection.name}</MenuItem>
-            ))
-          }
+          {collections.map((collection) => (
+            <MenuItem
+              key={collection.id}
+              onClick={() => handleSave1(collection.id)}
+            >
+              {collection.name}
+            </MenuItem>
+          ))}
         </Menu>
       </div>
       <div className={classes.cardContent}>
@@ -126,7 +147,7 @@ const MobileCardView = ({
           startIcon={<ArchiveOutlinedIcon fill="#414141" />}
           onClick={handleArchiveClick}
         >
-          {archived ? 'Archived' : 'Archive'}
+          {archived ? "Archived" : "Archive"}
         </Button>
       </div>
       <div className={classes.commentSection}>
@@ -145,9 +166,15 @@ const MobileCardView = ({
           ))}
         </div>
         <div className={classes.commentBox}>
-          <input placeholder="Type your comment" value={comment} onChange={(ev) => setComment(ev.target.value)} className={classes.commentInput} onKeyUp={handleKeyPress} />
+          <input
+            placeholder="Type your comment"
+            value={comment}
+            onChange={(ev) => setComment(ev.target.value)}
+            className={classes.commentInput}
+            onKeyUp={handleKeyPress}
+          />
           <div className={classes.sendBtn} onClick={handlePostComment}>
-            <SendIcon sx={{ color: '#fafafa', width: 14 }} />
+            <SendIcon sx={{ color: "#fafafa", width: 14 }} />
           </div>
         </div>
       </div>
@@ -166,7 +193,7 @@ const CardView = () => {
   const [collections, setCollections] = useState([]);
   const [saved, setSaved] = useState(false);
   const [comments, setComments] = useState(dummyData.comments);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [card, setCard] = useState(dummyData.card);
 
   const { run: fetchCard } = useRequest(fetchCardById, {
@@ -176,7 +203,7 @@ const CardView = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
   const { run: archiveCard } = useRequest(archiveCardById, {
     manual: true,
@@ -185,16 +212,16 @@ const CardView = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
-  const { run: getCollections } = useRequest(fetchCollections, {
+  const { run: getCollections } = useRequest(fetchCollectionsUsingGet, {
     manual: true,
     onSuccess: (response) => {
       setCollections(response.collections);
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
   const { run: saveCard } = useRequest(saveCardById, {
     manual: true,
@@ -203,7 +230,7 @@ const CardView = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
   const { run: rateCard } = useRequest(rateCardById, {
     manual: true,
@@ -212,7 +239,7 @@ const CardView = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
   const { run: fetchComments } = useRequest(fetchCommentsByContentId, {
     manual: true,
@@ -221,21 +248,21 @@ const CardView = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
 
   const { run: postComment } = useRequest(addCommentByContentId, {
     manual: true,
     onSuccess: (response) => {
       console.log(response);
-      setComment('');
+      setComment("");
       if (card.content_id) {
         fetchComments(card.content_id);
       }
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
 
   useEffect(() => {
@@ -243,12 +270,12 @@ const CardView = () => {
   }, []);
 
   useEffect(() => {
-    fetchCard(cardId)
+    fetchCard(cardId);
   }, [cardId, fetchCard]);
 
   useEffect(() => {
     if (card.content_id) {
-      fetchComments(card.content_id)
+      fetchComments(card.content_id);
     }
   }, [card.content_id, fetchComments]);
 
@@ -256,19 +283,19 @@ const CardView = () => {
     // Api call
     rateCard(card.content_id, newRating);
     setCard({ ...card, rating: newRating });
-  }
+  };
   const handleArchiveClick = () => {
     // Api call
     archiveCard(cardId);
-  }
+  };
   const handleSave = (collectionId) => {
     // Api call
     saveCard(cardId, collectionId);
-  }
+  };
   const handlePostComment = () => {
     //Api call
     postComment(card.content_id, comment);
-  }
+  };
   return (
     <>
       {/* Render MobileComponent on screens smaller than 'md' */}
@@ -376,8 +403,8 @@ const useMobileCardViewStyles = makeStyles({
   },
   commentBox: {
     marginTop: 10,
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   commentHead: {
     display: "flex",
@@ -401,16 +428,16 @@ const useMobileCardViewStyles = makeStyles({
     marginTop: 8,
   },
   commentInput: {
-    borderRadius: '10px 0 0 10px',
-    border: '1px solid #4E157A',
-    background: '#F0F0F0',
-    padding: '18px 30px 18px 30px',
-    width: '70%',
+    borderRadius: "10px 0 0 10px",
+    border: "1px solid #4E157A",
+    background: "#F0F0F0",
+    padding: "18px 30px 18px 30px",
+    width: "70%",
   },
   sendBtn: {
-    backgroundColor: '#4E157A',
-    borderRadius: '0px 10px 10px 0px',
-    border: '#4E157A',
+    backgroundColor: "#4E157A",
+    borderRadius: "0px 10px 10px 0px",
+    border: "#4E157A",
     padding: 13,
   },
 });
