@@ -195,9 +195,9 @@ const CardView = () => {
   const [archived, setArchived] = useState(false);
   const [collections, setCollections] = useState([]);
   const [saved, setSaved] = useState(false);
-  const [comments, setComments] = useState(dummyData.comments);
+  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-  const [card, setCard] = useState(dummyData.card);
+  const [card, setCard] = useState({});
 
   const { run: fetchCard } = useRequest(fetchCardById, {
     manual: true,
@@ -369,7 +369,7 @@ const useMobileCardViewStyles = makeStyles({
   cardBody: {
     overflowY: "auto",
     overflowX: "auto",
-    marginTop: -80,
+    // marginTop: -80,
   },
   rating: {
     marginTop: 16,
