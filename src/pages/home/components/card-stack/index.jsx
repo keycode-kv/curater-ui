@@ -1,31 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router";
+import { useRequest } from "ahooks";
 
 import Box from "@mui/material/Box";
 
-import { useCardsStore } from "stores/cards";
+import { archiveCardById, fetchCollectionsUsingGet, saveCardById } from "services/cards";
 
 import ArticleCard from "components/article-card";
 
-export default function CardStack({ cards }) {
+export default function CardStack({
+  cards,
+  removeCard
+}) {
   const navigate = useNavigate();
-  const removeCard = useCardsStore((state) => state.removeCard);
+  const [collections, setCollections] = useState([]);
 
-  const swiped = (cardId) => {
-    removeCard(cardId);
+  const { run: getCollections } = useRequest(fetchCollectionsUsingGet, {
+    manual: true,
+    onSuccess: (response) => {
+      setCollections(response.collections);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+
+  const { run: saveCard } = useRequest(saveCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      // removeCard(cardId);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+
+  const { run: archiveCard } = useRequest(archiveCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      // setArchived(true);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+
+  useEffect(() => {
+    getCollections();
+  }, [getCollections]);
+
+
+  const handleArchiveClick = (cardId) => {
+    archiveCard(cardId);
+  }
+
+  const handleSave = (cardId, collectionId) => {
+    saveCard(cardId, collectionId);
+  }
+
+
+  const handleSwipeLeft = (card) => {
+    handleArchiveClick(card.id)
+    removeCard(card.id);
   };
 
-  const handleSwipeLeft = (cardId) => {
-    // TODO: ADD swipe left action
-    console.log("Swiped left");
-    swiped(cardId);
-  };
-
-  const handleSwipeRight = (cardId) => {
-    // TODO: ADD swipe right action
-    console.log("Swiped right");
-    swiped(cardId);
+  const handleSwipeRight = (card) => {
+    handleSave(card.id)
+    removeCard(card.id);
   };
 
   const handleOnClick = (cardId) => {
@@ -39,9 +81,12 @@ export default function CardStack({ cards }) {
           index={index}
           key={card.id}
           card={card}
-          onSwipeLeft={() => handleSwipeLeft(card.id)}
-          onSwipeRight={() => handleSwipeRight(card.id)}
+          onSwipeLeft={() => handleSwipeLeft(card)}
+          onSwipeRight={() => handleSwipeRight(card)}
           onClick={() => handleOnClick(card.id)}
+          collections={collections}
+          handleSave={(collectionId) => handleSave(card.id, collectionId)}
+          handleArchiveClick={() => handleArchiveClick(card.id)}
         />
       ))}
     </Box>

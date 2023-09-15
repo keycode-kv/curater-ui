@@ -6,6 +6,8 @@ import { useSpring, animated } from 'react-spring';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import MainCard from 'components/main-card';
 
@@ -18,8 +20,21 @@ export default function ArticleCard({
   card,
   onSwipeRight,
   onSwipeLeft,
-  onClick
+  onClick,
+  collections,
+  handleSave,
+  handleArchiveClick
 }) {
+   
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   const [{ x, y, opacity }, api] = useSpring(() => ({ x: 0, y: 0, opacity: 1 }));
 
   const bind = useGesture({
@@ -73,6 +88,17 @@ export default function ArticleCard({
     }, 200);
   };
 
+  const handleSaveToCollection = (collectionId) => {
+    handleSave(collectionId);
+    handleCloseMenu();
+    animateSwipeRight();
+  }
+
+  const handleArchive = () => {
+    handleArchiveClick();
+    animateSwipeLeft();
+  }
+
   return (
     <Box
       sx={{
@@ -103,15 +129,30 @@ export default function ArticleCard({
           }}
         >
           <IconButton
-            onClick={animateSwipeLeft}
+            onClick={handleArchive}
           >
             <ArchiveIcon />
           </IconButton>
           <IconButton
-            onClick={animateSwipeRight}
+            onClick={handleOpenMenu}
           >
             <SaveIcon />
           </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleCloseMenu}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            {
+              collections.map((collection) => (
+                <MenuItem key={collection.id} onClick={() => handleSaveToCollection(collection.id)}>{collection.name}</MenuItem>
+              ))
+            }
+          </Menu>
           <Box sx={{
             display: { xs: 'none', md: 'block' },
             m: '8px'
