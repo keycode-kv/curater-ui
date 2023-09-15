@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import SendIcon from '@mui/icons-material/Send';
 
 import SetupCard from './set-up-card';
 import CopyTextBox from './copy-text-box';
@@ -11,7 +12,7 @@ import Carousel from 'components/carousel';
 import { ReactComponent as CuraterLogo } from "../../assets/curater_logo_dark.svg";
 import { ReactComponent as SearchingLooking } from "../../assets/searching-looking.svg";
 import { ReactComponent as WorkflowTeamWork } from "../../assets/workflow-team-work.svg";
-
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
   container: {
@@ -41,11 +42,12 @@ const useStyles = makeStyles({
     padding: "20px",
     height: '100%',
     paddingTop: '100px'
-  }
+  },
 });
 
 export default function SetupPage() {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const carousalItems = [
     <SetupCard
@@ -116,6 +118,16 @@ export default function SetupPage() {
         </Box>
 
       </Box>
+      <Button
+        sx={{
+          mt: '12px',
+          color: '#FFFFFF'
+        }}
+        endIcon={<SendIcon />}
+        onClick={() => navigate('/', { replace: true })}
+      >
+        Continue
+      </Button>
     </Box>
   );
 } 
