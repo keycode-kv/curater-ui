@@ -1,29 +1,46 @@
 import React from "react";
-import { makeStyles } from '@mui/styles';
-import { Button, Grid } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
-// const useStyles = makeStyles({
-//  container: {
-//   display: "flex",
-//   background: "red",
-//   color: "yellow",
-//   height: "100vh",
-//   width: '100%'
-//  }
-// });
+import MainHeader from "components/main-header";
+
+import CardStack from "./components/card-stack";
+import EmptyStack from "./components/empty-stack";
+
+import { useCardsStore } from "stores/cards";
+
+const useStyles = makeStyles({
+  container: {
+    height: `calc(100vh - 40px)`,
+    display: "flex",
+    flexGrow: "1",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 const Home = () => {
-    const navigate = useNavigate()
-//   const classes = useStyles();
+  const classes = useStyles();
+  const cards = useCardsStore((state) => state.cards);
+  const showEmptyWidget = !cards?.length;
   return (
-    <Grid item xs={12} md={6} lg={4}>
-        <Button
-          onClick={() => navigate('/card')}
-        >
-            Goto Cards
-        </Button>
-    </Grid>
+    <Box
+      sx={{
+        height: "100vh",
+      }}
+    >
+      <MainHeader />
+      <div className={classes.container}>
+        {showEmptyWidget ? (
+          <Box sx={{ p: "12px" }}>
+            <EmptyStack />
+          </Box>
+        ) : (
+          <CardStack cards={cards} />
+        )}
+      </div>
+    </Box>
   );
 };
 
