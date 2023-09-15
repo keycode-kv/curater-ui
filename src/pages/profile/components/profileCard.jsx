@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) =>({
     }
   }));
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user , redirectEmail}) => {
     const classes=useStyles();
   return (
     <Card className={classes.detailCard}>
@@ -28,6 +28,7 @@ const ProfileCard = ({ user }) => {
         <ProfileField label='Name' value={user.name}/>
         <ProfileField label ='Email' value={user.email}/>
         <ProfileField label ='Password' value='**********'/>
+        <ProfileField label ='RedirectMail' value={redirectEmail}/>
         <div className={classes.statsContainer}>
             <ColoredContainer text={`${user.article_count} Articles`} />
             <ColoredContainer text='500 Comments'/>
