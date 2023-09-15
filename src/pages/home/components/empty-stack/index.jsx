@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 
 import {ReactComponent as  EmptyListSplash} from 'assets/empty-list-splash.svg';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -26,9 +27,9 @@ const useStyles = makeStyles({
 
 export default function EmptyStack() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const handleNavigateToSetupMail = () => {
-    // TODO: Handle navigation
-    console.log("handle navigation here")
+    navigate('/set-up');
   };
   return (
     <Box
