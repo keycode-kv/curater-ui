@@ -41,7 +41,7 @@ const SavedCardsPage = () => {
     onSuccess: (res) => {
       setCollections(res?.collections);
       setItem(res?.collections[0].id);
-      getCardsList({ type: "saved", collection: res?.collections[0].id });
+      getCardsList({ type: "saved", collection: res?.collections?.[0]?.id });
     },
     onError: (err) => {
       console.log(err);
@@ -107,7 +107,7 @@ const SavedCardsPage = () => {
                 },
               }}
             >
-              {collections.map((collection) => (
+              {collections?.map((collection) => (
                 <MenuItem value={collection.id}>{collection.name}</MenuItem>
               ))}
             </Select>
