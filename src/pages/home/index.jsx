@@ -8,17 +8,16 @@ import MainHeader from "components/main-header";
 import CardStack from "./components/card-stack";
 import EmptyStack from "./components/empty-stack";
 
-
 import { fetchCardsListUsingGet } from "services/cards";
 
 const useStyles = makeStyles({
   container: {
     height: `calc(100vh - 80px)`,
     display: "flex",
-    flexGrow: "1",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    padding: '0 20px',
+    marginTop: 12
   },
 });
 
@@ -27,13 +26,12 @@ const Home = () => {
   const [cards, setCards] = useState([]);
 
   const removeCard = (cardId) => {
-    const filteredCards = cards?.filter((card) => card?.id !== cardId )
+    const filteredCards = cards?.filter((card) => card?.id !== cardId);
     setCards(filteredCards);
     if (!filteredCards?.length) {
-      fetchCards({});
+      fetchCards({ type: "active" });
     }
-  }
-
+  };
 
   const { run: fetchCards } = useRequest(fetchCardsListUsingGet, {
     manual: true,
@@ -42,33 +40,30 @@ const Home = () => {
     },
     onError: (e) => {
       console.error(e);
-    }
+    },
   });
 
   useEffect(() => {
-    fetchCards({});
+    fetchCards({ type: "active" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const showEmptyWidget = !cards?.length;
 
   return (
     <Box
       sx={{
-        height: "100vh",
+        maxHeight: "100vh",
+        minHeight: "100vh",
+        overflow: 'hidden'
       }}
     >
-      <MainHeader />
+      <MainHeader isFilterVisible={false} />
       <div className={classes.container}>
         {showEmptyWidget ? (
-          <Box sx={{ p: "12px" }}>
-            <EmptyStack />
-          </Box>
+          <EmptyStack />
         ) : (
-          <CardStack
-            cards={cards}
-            removeCard={removeCard}
-          />
+          <CardStack cards={cards} removeCard={removeCard} />
         )}
       </div>
     </Box>

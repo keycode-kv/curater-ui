@@ -91,6 +91,7 @@ const SavedCardsPage = () => {
         type="saved"
         collection={item}
         search={searchInput}
+        isFilterVisible
       />
       <Grid item className={classes.contentWrapper} xs={12}>
         <Grid className={classes.cardHeader} xs={12}>

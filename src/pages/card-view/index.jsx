@@ -37,9 +37,9 @@ const btnStyles = {
   textTransform: "capitalize",
   paddingLeft: "24px",
   paddingRight: "24px",
-  ':hover': {
-    background: '#e7cbfd',
-  }
+  ":hover": {
+    background: "#e7cbfd",
+  },
 };
 
 const MobileCardView = ({
@@ -270,6 +270,7 @@ const CardView = () => {
 
   useEffect(() => {
     getCollections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -335,7 +336,6 @@ const useDesktopCardViewStyles = makeStyles({
     borderRadius: 30,
     border: "5px solid var(--Dark-Purple, #4E157A)",
     background: "var(--White, #FAFAFA)",
-    /* Block Shadow */
     boxShadow: "15px 15px 0px 0px rgba(211, 156, 255, 0.25)",
   },
 });
@@ -343,7 +343,6 @@ const useDesktopCardViewStyles = makeStyles({
 const useMobileCardViewStyles = makeStyles({
   container: {
     minHeight: "100vh",
-    // width: '100%',
     background: "var(--White, #FAFAFA)",
     padding: "50px 36px",
   },
@@ -358,7 +357,6 @@ const useMobileCardViewStyles = makeStyles({
     color: "#414141",
   },
   cardContentHeader: {
-    // fontFamily: 'Roboto',
     fontSize: 22,
     fontWeight: 600,
   },
@@ -369,8 +367,6 @@ const useMobileCardViewStyles = makeStyles({
     marginTop: 10,
   },
   cardBody: {
-    // fontFamily: 'Roboto',
-    // maxHeight: 500,
     overflowY: "auto",
     overflowX: "auto",
     marginTop: -125,

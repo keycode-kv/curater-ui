@@ -68,7 +68,7 @@ const GoPremiumButtonSx = {
   },
 };
 
-const MainHeader = ({ getCardsList, type, collection, search }) => {
+const MainHeader = ({ getCardsList, type, collection, search, isFilterVisible }) => {
   const classes = useStyles();
   const location = useLocation();
   const navigate = useNavigate();
@@ -141,7 +141,9 @@ const MainHeader = ({ getCardsList, type, collection, search }) => {
           <DrawerIcon />
         </IconButton>
         <CuraterLogo className={classes.mt12} />
-        <IconButton sx={{ padding: 0 }} onClick={handleFilterButtonClick}>
+        <IconButton sx={{ padding: 0 }} onClick={handleFilterButtonClick} style={{
+          visibility: isFilterVisible ? 'visible' : 'hidden'
+        }}>
           <FilterIcon />
         </IconButton>
       </Grid>

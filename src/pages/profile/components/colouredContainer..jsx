@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   coloredContainer: {
     backgroundColor: '#D39CFF', // Background color
-    borderRadius: '25px', // Border radius
-    padding: theme.spacing(2), // Add padding as needed
+    borderRadius: '20px', // Border radius
+    padding: '8px 12px',
     fontSize:10,
-    width:'20%',
     height:10,
     display:'flex',
+    flexWrap: 'wrap',
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    whiteSpace: 'nowrap'
   },
 }));
 

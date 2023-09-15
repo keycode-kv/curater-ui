@@ -53,6 +53,7 @@ const ArchiveCardsPage = () => {
         getCardsList={getCardsList}
         type="archived"
         search={searchInput}
+        isFilterVisible
       />
       <Grid item className={classes.contentWrapper} xs={12}>
         <Grid className={classes.cardHeader} xs={12}>
