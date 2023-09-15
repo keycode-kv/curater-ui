@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 import MainHeader from "components/main-header";
 
@@ -12,31 +12,34 @@ import { useCardsStore } from "stores/cards";
 const useStyles = makeStyles({
   container: {
     height: `calc(100vh - 40px)`,
-    display: 'flex',
-    flexGrow: '1',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
- });
+    display: "flex",
+    flexGrow: "1",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 const Home = () => {
   const classes = useStyles();
   const cards = useCardsStore((state) => state.cards);
-  const showEmptyWidget = !cards?.length
+  const showEmptyWidget = !cards?.length;
   return (
     <Box
       sx={{
-       height: '100vh',
+        height: "100vh",
       }}
     >
       <MainHeader />
       <div className={classes.container}>
-        {showEmptyWidget
-          ? <Box sx={{ p: '12px' }}><EmptyStack /></Box>
-          : <CardStack cards={cards} />
-        }
-      </div>      
+        {showEmptyWidget ? (
+          <Box sx={{ p: "12px" }}>
+            <EmptyStack />
+          </Box>
+        ) : (
+          <CardStack cards={cards} />
+        )}
+      </div>
     </Box>
   );
 };

@@ -80,7 +80,7 @@ const MainHeader = () => {
   };
 
   const handleHomeClick = () => {
-    // handleHomeClick fn
+    navigate("/");
   };
 
   const handleProfileClick = () => {
