@@ -37,9 +37,9 @@ const btnStyles = {
   textTransform: "capitalize",
   paddingLeft: "24px",
   paddingRight: "24px",
-  ':hover': {
-    background: '#e7cbfd',
-  }
+  ":hover": {
+    background: "#e7cbfd",
+  },
 };
 
 const MobileCardView = ({
@@ -270,6 +270,7 @@ const CardView = () => {
 
   useEffect(() => {
     getCollections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import SubNavbar from "./components/subNavbar";
 import ProfileCard from "./components/profileCard";
 import MainHeader from "components/main-header";
 import { getConfigMail, getUser } from "../../services/profile";
 import { useRequest } from "ahooks";
+import { Button } from "@mui/material";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import { useNavigate } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,15 +22,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    padding: "24px",
   },
 }));
 
 const ProfilePage = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({});
   const [redirectEmail, setRedirectEmail] = useState("");
-  const [activeButton, setActiveButton] = useState("profile"); // 'profile' is focused by default
-  
+
   const { run: getProfile } = useRequest(getUser, {
     manual: true,
     onSuccess: (result) => {
@@ -39,18 +43,15 @@ const ProfilePage = () => {
     },
   });
 
-  const { run: getConfigEmail } = useRequest(
-    getConfigMail,
-    {
-      manual: true,
-      onSuccess: (result) => {
-        setRedirectEmail(result.redirect_email);
-      },
-      onError: (e) => {
-        console.log(e);
-      },
-    }
-  );
+  const { run: getConfigEmail } = useRequest(getConfigMail, {
+    manual: true,
+    onSuccess: (result) => {
+      setRedirectEmail(result.redirect_email);
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
 
   useEffect(() => {
     getProfile();
@@ -61,16 +62,37 @@ const ProfilePage = () => {
   return (
     <div className={classes.container}>
       <MainHeader isFilterVisible={false} />
-      <SubNavbar
-        activeButton={activeButton}
-        setActiveButton={setActiveButton}
-      />
       <Container className={classes.centerContent}>
-        {activeButton === "profile" && (
-          <div>
-            <ProfileCard user={user} redirectEmail={redirectEmail} />
-          </div>
-        )}
+        <span
+          style={{
+            fontSize: "20px",
+            marginBottom: "16px",
+          }}
+        >
+          Personal Info
+        </span>
+        <ProfileCard user={user} redirectEmail={redirectEmail} />
+        <Button
+          disableElevation
+          sx={{
+            borderRadius: 56,
+            backgroundColor: "#e7cbfd",
+            color: "#414141",
+            textTransform: "capitalize",
+            padding: "6px 20px",
+            width: '150px',
+            marginTop: '12px',
+            fontSize: '12px',
+            ":hover": {
+              background: "#e7cbfd",
+            },
+          }}
+          variant="contained"
+          startIcon={<ArchiveOutlinedIcon fill="#414141" />}
+          onClick={() => navigate('/archive')}
+        >
+          View Archived
+        </Button>
       </Container>
     </div>
   );

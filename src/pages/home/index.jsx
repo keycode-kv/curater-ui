@@ -16,6 +16,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: '28px 20px'
   },
 });
 
