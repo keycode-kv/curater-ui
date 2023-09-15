@@ -20,20 +20,20 @@ export default function ArticleCard({
   onSwipeLeft,
   onClick
 }) {
-  const [{ x, y, opacity }, api] = useSpring(() => ({ x: 0, y: 0, opacity: 1 }))
+  const [{ x, y, opacity }, api] = useSpring(() => ({ x: 0, y: 0, opacity: 1 }));
 
   const bind = useGesture({
     onDrag: ({ down, movement: [mx, my] }) => {
       api.start({
         x: down ? mx : 0,
         y: down ? my : 0,
-        opacity: mx > 300 ? 1 : 0.5
+        opacity: mx > 100 ? 1 : 0.5
       })
     },
     onDragEnd: ({
       movement: [mx, my]
     }) => {
-      if (mx && Math.abs(mx) > 300) {
+      if (mx && Math.abs(mx) > 100) {
         if (mx > 0) {
           onSwipeRight()
         } else {

@@ -1,15 +1,18 @@
 import { Button, Grid, Hidden, IconButton, Menu, MenuItem, Rating } from '@mui/material';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import CloseIcon from '@mui/icons-material/Close';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ReactComponent as StarIcon } from "../../assets/rating-star.svg";
 import { ReactComponent as CuratorLogoDarkIcon } from "../../assets/curater-logo-dark.svg";
 import dummyData from "./dummy-data";
 import { formatTimestamp } from "../../utils/datetime-utils";
+import { useRequest } from 'ahooks';
+import { addCommentByContentId, archiveCardById, fetchCardById, fetchCollections, fetchCommentsByContentId, rateCardById, saveCardById } from 'services/cards';
 
 const btnStyles = {
   borderRadius: 56,
@@ -20,7 +23,19 @@ const btnStyles = {
   paddingRight: "24px",
 };
 
-const MobileCardView = ({ card, comments }) => {
+const MobileCardView = ({
+  card,
+  comments,
+  handleRatingChange,
+  handleArchiveClick,
+  archived = false,
+  collections,
+  handleSave,
+  saved = false,
+  handlePostComment,
+  comment,
+  setComment,
+}) => {
   const navigate = useNavigate();
   const classes = useMobileCardViewStyles();
 
@@ -32,11 +47,22 @@ const MobileCardView = ({ card, comments }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleSave1 = (collectionId) => {
+    handleSave(collectionId);
+    handleClose();
+  }
+  const handleKeyPress = (e) => {
+    // Check if the Enter key was pressed (keycode 13 or key value "Enter")
+    if (e.key === 'Enter') {
+      // Trigger your action here
+      handlePostComment();
+    }
+  };
   return (
     <div className={classes.container}>
       <div className={classes.header}>
         <IconButton
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/', { replace: true})}
         >
           <CloseIcon sx={{ color: "#414141" }} />
         </IconButton>
@@ -48,7 +74,7 @@ const MobileCardView = ({ card, comments }) => {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
+          {saved ? <BookmarkIcon sx={{ color: "#4E157A" }} /> : <BookmarkBorderIcon sx={{ color: "#4E157A" }} />}
         </IconButton>
         <Menu
           id="basic-menu"
@@ -59,25 +85,33 @@ const MobileCardView = ({ card, comments }) => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem onClick={handleClose}>Read Later</MenuItem>
-          <MenuItem onClick={handleClose}>Collection 1</MenuItem>
-          <MenuItem onClick={handleClose}>Collection 2</MenuItem>
+          {
+            collections.map((collection) => (
+              <MenuItem key={collection.id} onClick={() => handleSave1(collection.id)}>{collection.name}</MenuItem>
+            ))
+          }
         </Menu>
       </div>
       <div className={classes.cardContent}>
-        <div className={classes.cardContentHeader}>{card.title}</div>
-        <div className={classes.cardSource}>{card.source}</div>
+        {/* <div className={classes.cardContentHeader}>{card.title}</div> */}
+        {/* <div className={classes.cardSource}>{card.source}</div> */}
         <div
           className={classes.cardBody}
           dangerouslySetInnerHTML={{ __html: card.content }}
         />
+        {/* <iframe
+          title="Rendered HTML"
+          srcDoc={card.content}
+          width="100%"
+          height="600" // You can adjust the height as needed
+        /> */}
       </div>
       <div className={classes.rating}>
         <Rating
           name="card-rating"
           value={card.rating}
           onChange={(event, newValue) => {
-            console.log(newValue);
+            handleRatingChange(newValue);
           }}
           icon={<StarIcon fill="#D39CFF" />}
           emptyIcon={<StarIcon />}
@@ -90,8 +124,9 @@ const MobileCardView = ({ card, comments }) => {
           sx={btnStyles}
           variant="contained"
           startIcon={<ArchiveOutlinedIcon fill="#414141" />}
+          onClick={handleArchiveClick}
         >
-          Archive
+          {archived ? 'Archived' : 'Archive'}
         </Button>
       </div>
       <div className={classes.commentSection}>
@@ -105,13 +140,13 @@ const MobileCardView = ({ card, comments }) => {
                   &nbsp;| {formatTimestamp(comment.commented_at)}
                 </div>
               </div>
-              <div className={classes.commentBody}>{comment.content}</div>
+              <div className={classes.commentBody}>{comment.comment}</div>
             </div>
           ))}
         </div>
         <div className={classes.commentBox}>
-          <input placeholder="Type your comment" className={classes.commentInput} />
-          <div className={classes.sendBtn}>
+          <input placeholder="Type your comment" value={comment} onChange={(ev) => setComment(ev.target.value)} className={classes.commentInput} onKeyUp={handleKeyPress} />
+          <div className={classes.sendBtn} onClick={handlePostComment}>
             <SendIcon sx={{ color: '#fafafa', width: 14 }} />
           </div>
         </div>
@@ -127,14 +162,130 @@ const DesktopCardView = ({ card, comments }) => {
 
 const CardView = () => {
   const { cardId } = useParams();
-  console.log("cardId", cardId);
+  const [archived, setArchived] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [saved, setSaved] = useState(false);
   const [comments, setComments] = useState(dummyData.comments);
+  const [comment, setComment] = useState('');
   const [card, setCard] = useState(dummyData.card);
+
+  const { run: fetchCard } = useRequest(fetchCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      setCard(response);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+  const { run: archiveCard } = useRequest(archiveCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      setArchived(true);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+  const { run: getCollections } = useRequest(fetchCollections, {
+    manual: true,
+    onSuccess: (response) => {
+      setCollections(response.collections);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+  const { run: saveCard } = useRequest(saveCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      setSaved(true);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+  const { run: rateCard } = useRequest(rateCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      console.log(response);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+  const { run: fetchComments } = useRequest(fetchCommentsByContentId, {
+    manual: true,
+    onSuccess: (response) => {
+      setComments(response.comments);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+
+  const { run: postComment } = useRequest(addCommentByContentId, {
+    manual: true,
+    onSuccess: (response) => {
+      console.log(response);
+      setComment('');
+      if (card.content_id) {
+        fetchComments(card.content_id);
+      }
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  });
+
+  useEffect(() => {
+    getCollections();
+  }, []);
+
+  useEffect(() => {
+    fetchCard(cardId)
+  }, [cardId, fetchCard]);
+
+  useEffect(() => {
+    if (card.content_id) {
+      fetchComments(card.content_id)
+    }
+  }, [card.content_id, fetchComments]);
+
+  const handleRatingChange = (newRating) => {
+    // Api call
+    rateCard(card.content_id, newRating);
+    setCard({ ...card, rating: newRating });
+  }
+  const handleArchiveClick = () => {
+    // Api call
+    archiveCard(cardId);
+  }
+  const handleSave = (collectionId) => {
+    // Api call
+    saveCard(cardId, collectionId);
+  }
+  const handlePostComment = () => {
+    //Api call
+    postComment(card.content_id, comment);
+  }
   return (
     <>
       {/* Render MobileComponent on screens smaller than 'md' */}
       <Hidden mdUp>
-        <MobileCardView card={card} comments={comments} />
+        <MobileCardView
+          card={card}
+          comments={comments}
+          handleRatingChange={handleRatingChange}
+          handleArchiveClick={handleArchiveClick}
+          archived={archived}
+          collections={collections}
+          handleSave={handleSave}
+          saved={saved}
+          handlePostComment={handlePostComment}
+          comment={comment}
+          setComment={setComment}
+        />
       </Hidden>
 
       {/* Render DesktopComponent on screens 'md' and larger */}
@@ -189,12 +340,10 @@ const useMobileCardViewStyles = makeStyles({
   },
   cardBody: {
     // fontFamily: 'Roboto',
-    fontSize: 18,
-    fontStyle: "italic",
-    fontWeight: 400,
-    marginTop: 10,
-    // maxHeight: 400,
-    overflow: "auto",
+    // maxHeight: 500,
+    overflowY: "auto",
+    overflowX: "auto",
+    marginTop: -125,
   },
   rating: {
     marginTop: 16,

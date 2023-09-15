@@ -1,26 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import {
-  FormControl,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Grid, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 import MainCard from "../../components/main-card";
 import MainHeader from "../../components/main-header";
 
-import {
-  useStyles,
-  TextFieldInputSxProps,
-  MenuPropsSxProps,
-  SelectSxProps,
-} from "./styles";
-import { useRequest } from "ahooks";
-import { fetchCollectionsUsingGet } from "../../services/cards";
+import { useStyles, TextFieldInputSxProps } from "./styles";
 
 const mockData = [
   {
@@ -59,26 +45,11 @@ const mockData = [
   },
 ];
 
-const SavedCardsPage = () => {
+const ArchiveCardsPage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  // eslint-disable-next-line no-unused-vars
-  const { run } = useRequest(fetchCollectionsUsingGet, {
-    onSuccess: (res) => {
-      console.log(res);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const [item, setItem] = useState("Read Later");
   const [searchInput, setSearchInput] = useState("");
-
-  const handleItemSelect = (event) => {
-    setItem(event.target.value);
-  };
 
   const handleValueChange = (e) => {
     setSearchInput(e.target.value);
@@ -89,24 +60,6 @@ const SavedCardsPage = () => {
       <MainHeader />
       <Grid item className={classes.contentWrapper} xs={12}>
         <Grid className={classes.cardHeader} xs={12}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <Select
-              value={item}
-              onChange={handleItemSelect}
-              variant="standard"
-              disableUnderline
-              sx={SelectSxProps}
-              MenuProps={{
-                PaperProps: {
-                  sx: MenuPropsSxProps,
-                },
-              }}
-            >
-              {["Read Later", "Collection 1", "Collection 2"].map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <TextField
             InputProps={{
               startAdornment: (
@@ -134,4 +87,4 @@ const SavedCardsPage = () => {
   );
 };
 
-export default SavedCardsPage;
+export default ArchiveCardsPage;
