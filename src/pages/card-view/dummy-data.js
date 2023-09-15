@@ -10,13 +10,13 @@ const card = {
 const comments = [
   {
     id: "comm_id_123",
-    content : "Lorem ipsum dolor sit amet consectetur. Nunc tempus integer ultricies faucibus ultricies cras volutpat lacus viverra. At velit rutrum convallis.",
+    comment : "Lorem ipsum dolor sit amet consectetur. Nunc tempus integer ultricies faucibus ultricies cras volutpat lacus viverra. At velit rutrum convallis.",
 		user : "rajat_123",
     commented_at : 1694626700
   },
   {
     id: "comm_id_123",
-    content : "Lorem ipsum dolor sit amet consectetur. Nunc tempus integer ultricies faucibus ultricies cras volutpat lacus viverra. At velit rutrum convallis.",
+    comment : "Lorem ipsum dolor sit amet consectetur. Nunc tempus integer ultricies faucibus ultricies cras volutpat lacus viverra. At velit rutrum convallis.",
 		user : "rajat_123",
     commented_at : 1694626700
   }
