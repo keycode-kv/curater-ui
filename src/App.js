@@ -4,7 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import Card from "./pages/card";
 import Home from "./pages/home";
 import Login from "./pages/login";
-import CardsList from "./pages/cards-list";
+import SavedCardsPage from "./pages/saved";
+import ProfilePage from "./pages/profile";
 
 import './App.css';
 import CardView from './pages/card-view';
@@ -16,8 +17,9 @@ function App() {
         <Route path="card/:cardId" element={<CardView />} />
         <Route path="card" element={<Card />} />
         <Route path="login/*" element={<Login />} />
+        <Route path="saved" element={<SavedCardsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="*" element={<Home />} />
-        <Route path="cards-list" element={<CardsList />} />
       </Routes>
     </ErrorBoundary>
   );
