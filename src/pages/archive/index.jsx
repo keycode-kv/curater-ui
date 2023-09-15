@@ -1,63 +1,59 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Grid, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRequest } from "ahooks";
 
 import MainCard from "../../components/main-card";
 import MainHeader from "../../components/main-header";
 
 import { useStyles, TextFieldInputSxProps } from "./styles";
-
-const mockData = [
-  {
-    id: "id_123",
-    title: "heading",
-    content:
-      "Lorem ipsum dolor sit amet consectetur. Metus cras at odio ante nulla ac.",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 1,
-  },
-  {
-    id: "id_1444",
-    title: "heading",
-    content: "gist of the newsletter",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 2,
-  },
-  {
-    id: "id_1234",
-    title: "heading",
-    content: "gist of the newsletter",
-    rating: 3.55,
-    view_count: 1432,
-    source_email: "joobi@test.com",
-    tags: ["golang", "backend", "programming"],
-    comments_count: 1562,
-    duration: 3,
-  },
-];
+import { fetchCardsListUsingGet } from "services/cards";
+import { useTagsStore } from "stores/tags";
 
 const ArchiveCardsPage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const { selectedTags, setSelectedTags } = useTagsStore();
+
   const [searchInput, setSearchInput] = useState("");
 
+  const { run: getCardsList, data: cardsList } = useRequest(
+    fetchCardsListUsingGet,
+    {
+      manual: true,
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+
   const handleValueChange = (e) => {
-    setSearchInput(e.target.value);
+    const { value } = e.target;
+    setSearchInput(value);
+    getCardsList({
+      type: "archived",
+      search: value,
+      tags: selectedTags,
+    });
   };
+
+  useEffect(() => {
+    getCardsList({ type: "archived" });
+    return () => {
+      setSelectedTags({});
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid item className={classes.container}>
-      <MainHeader />
+      <MainHeader
+        getCardsList={getCardsList}
+        type="archived"
+        search={searchInput}
+      />
       <Grid item className={classes.contentWrapper} xs={12}>
         <Grid className={classes.cardHeader} xs={12}>
           <TextField
@@ -73,10 +69,11 @@ const ArchiveCardsPage = () => {
             placeholder="Search Titles"
             variant="outlined"
             onChange={handleValueChange}
+            autoComplete="off"
           />
         </Grid>
         <Grid className={classes.cardContainer}>
-          {mockData.map((item) => (
+          {cardsList?.cards?.map((item) => (
             <div onClick={() => navigate(`/card/${item.id}`)}>
               <MainCard item={item} isMainCard={false} />
             </div>

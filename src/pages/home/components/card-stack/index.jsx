@@ -61,10 +61,12 @@ export default function CardStack({
 
 
   const handleSwipeLeft = (card) => {
+    handleArchiveClick(card.id)
     removeCard(card.id);
   };
 
   const handleSwipeRight = (card) => {
+    handleSave(card.id)
     removeCard(card.id);
   };
 
