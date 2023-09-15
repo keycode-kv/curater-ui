@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useNavigate } from "react-router";
+
 import Box from "@mui/material/Box";
 
 import { useCardsStore } from "stores/cards";
@@ -7,6 +9,7 @@ import { useCardsStore } from "stores/cards";
 import ArticleCard from "components/article-card";
 
 export default function CardStack({ cards }) {
+  const navigate = useNavigate();
   const removeCard = useCardsStore((state) => state.removeCard);
 
   const swiped = (cardId) => {
@@ -26,8 +29,7 @@ export default function CardStack({ cards }) {
   };
 
   const handleOnClick = (cardId) => {
-    // TODO: ADD onClick action
-    console.log("Clicked");
+    navigate(`/card/${cardId}`);
   };
 
   return (

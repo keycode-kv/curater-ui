@@ -17,9 +17,9 @@ function App() {
         <Route path="card/:cardId" element={<CardView />} />
         <Route path="card" element={<Card />} />
         <Route path="login/*" element={<Login />} />
-        <Route path="*" element={<Home />} />
         <Route path="saved" element={<SavedCardsPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </ErrorBoundary>
   );
