@@ -4,12 +4,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ReactComponent as StarIcon } from "../../assets/rating-star.svg";
 import { ReactComponent as CuratorLogoDarkIcon } from "../../assets/curater-logo-dark.svg";
 import dummyData from "./dummy-data";
 import { formatTimestamp } from "../../utils/datetime-utils";
+import { useRequest } from 'ahooks';
+import { fetchCardById } from 'services/cards';
 
 const btnStyles = {
   borderRadius: 56,
@@ -20,7 +22,7 @@ const btnStyles = {
   paddingRight: "24px",
 };
 
-const MobileCardView = ({ card, comments }) => {
+const MobileCardView = ({ card, comments, handleRatingChange }) => {
   const navigate = useNavigate();
   const classes = useMobileCardViewStyles();
 
@@ -71,13 +73,19 @@ const MobileCardView = ({ card, comments }) => {
           className={classes.cardBody}
           dangerouslySetInnerHTML={{ __html: card.content }}
         />
+        {/* <iframe
+          title="Rendered HTML"
+          srcDoc={card.content}
+          width="100%"
+          height="600" // You can adjust the height as needed
+        /> */}
       </div>
       <div className={classes.rating}>
         <Rating
           name="card-rating"
           value={card.rating}
           onChange={(event, newValue) => {
-            console.log(newValue);
+            handleRatingChange(newValue);
           }}
           icon={<StarIcon fill="#D39CFF" />}
           emptyIcon={<StarIcon />}
@@ -127,14 +135,32 @@ const DesktopCardView = ({ card, comments }) => {
 
 const CardView = () => {
   const { cardId } = useParams();
-  console.log("cardId", cardId);
+  const { loading, run: fetchCard } = useRequest(fetchCardById, {
+    manual: true,
+    onSuccess: (response) => {
+      setCard(response);
+    },
+    onError: (e) => {
+      console.error(e);
+    }
+  })
+  useEffect(() => {
+    fetchCard(cardId)
+  }, [cardId, fetchCard]);
   const [comments, setComments] = useState(dummyData.comments);
   const [card, setCard] = useState(dummyData.card);
+
+  const handleRatingChange = (newRating) => {
+    // Api call
+
+    // change state
+    setCard({ ...card, rating: newRating });
+  }
   return (
     <>
       {/* Render MobileComponent on screens smaller than 'md' */}
       <Hidden mdUp>
-        <MobileCardView card={card} comments={comments} />
+        <MobileCardView card={card} comments={comments}  handleRatingChange={handleRatingChange} />
       </Hidden>
 
       {/* Render DesktopComponent on screens 'md' and larger */}
@@ -189,12 +215,9 @@ const useMobileCardViewStyles = makeStyles({
   },
   cardBody: {
     // fontFamily: 'Roboto',
-    fontSize: 18,
-    fontStyle: "italic",
-    fontWeight: 400,
-    marginTop: 10,
-    // maxHeight: 400,
-    overflow: "auto",
+    maxHeight: 500,
+    overflowY: "auto",
+    overflowX: "auto",
   },
   rating: {
     marginTop: 16,
