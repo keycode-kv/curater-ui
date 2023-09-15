@@ -9,13 +9,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/*",
     element: <App />,
   },
 ]);
-
 ReactDOM.render(
   <React.StrictMode>
     <RouterProvider router={router} />

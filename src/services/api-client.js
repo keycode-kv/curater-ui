@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-
+import {router} from '../index';
 const qs = require('qs');
 
 const apiClient = axios.create({
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   config => {
-    config.headers['Authorization'] = `${localStorage.getItem('auth_token')}`;
+    config.headers['Authorization'] = `${localStorage.getItem('auth_token') ?? ''}`;
         return config;
     },
     error => {
@@ -26,9 +26,10 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     // // In case of status 401 user will redirect to login page because of token expire
-    // if (error?.response?.status === 401) {
-    //   router.push('/logout');
-    // }
+    if (error?.response?.status === 401) {
+      localStorage.removeItem('auth_token');
+      router.navigate('/login');
+     }
     return Promise.reject(error);
   },
 );
