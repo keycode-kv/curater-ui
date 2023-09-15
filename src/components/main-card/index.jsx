@@ -16,6 +16,7 @@ const useStyles = makeStyles({
     marginBottom: "24px",
     padding: "24px",
     touchAction: "none",
+    maxWidth: '350px'
   },
   header: {
     color: "#414141",
@@ -107,7 +108,7 @@ const MainCard = ({ item, isMainCard }) => {
       </div>
       <div className={classes.tagWrapper}>
         {item.tags?.map((item) => (
-          <span className={classes.tagContainer}>{item}</span>
+          <span key={item} className={classes.tagContainer}>{item}</span>
         ))}
       </div>
     </Grid>
