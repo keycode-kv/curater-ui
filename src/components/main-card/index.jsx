@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   card: {
     boxSizing: "border-box",
     borderRadius: "15px",
-    border: "3px solid var(--Dark-Purple, #4E157A)",
+    border: "3px solid #4E157A",
     background: "#FAFAFA",
     boxShadow: "7px 7px 0px 0px rgba(211, 156, 255, 0.25)",
     marginBottom: "24px",

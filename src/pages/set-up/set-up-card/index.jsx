@@ -1,38 +1,31 @@
-import React from 'react';
+import React from "react";
 
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   card: {
-    borderRadius: '30px',
-    backgroundColor: '#FAFAFA',
-    height: '490px',
-    width: '330px'
+    borderRadius: "30px",
+    border: "2px solid #4E157A",
+    background: "#FAFAFA",
+    boxShadow: "7px 7px 0px 0px rgba(211, 156, 255, 0.25)",
+    height: "270px",
+    width: "calc(100vw - 90px)",
+    padding: "10px 24px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    fontSize: "16px",
+    fontWeight: 500,
   },
-  cardImage: {
-    height: '350px',
-  },
-  content: {
-    height: '100px',
-    fontSize: '24px',
-    fontWeight: 400,
-    textAlign: 'center'
-  }
-})
+});
 
-export default function SetupCard({
-  image,
-  content
-}) {
+export default function SetupCard({ items }) {
   const classes = useStyles();
   return (
     <div className={classes.card}>
-      <div className={classes.cardImage}>
-        {image}
-      </div>
-      <div className={classes.content}>
-        {content}
-      </div>
+      {items.map((item) => (
+        <div>{item}</div>
+      ))}
     </div>
   );
 }
