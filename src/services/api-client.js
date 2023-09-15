@@ -5,7 +5,7 @@ const qs = require('qs');
 
 const apiClient = axios.create({
   timeout: 120000,
-  baseURL: 'https://random-data-api.com/api/v2/',
+  baseURL: 'http://192.168.2.255:8082',
   withCredentials: false,
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });
