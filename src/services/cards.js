@@ -6,9 +6,11 @@ export const fetchCollectionsUsingGet = () => {
 
 export const fetchCardsListUsingGet = (data) => {
   const params = new URLSearchParams();
-  data?.tags?.forEach((t) => {
-    params.append("tags", t);
-  });
+  if(data?.tags?.length) {
+    data?.tags?.forEach((t) => {
+      params.append("tags", t);
+    });
+  }
   if (data.search) {
     params.append("search", data.search);
   }

@@ -78,6 +78,9 @@ const SavedCardsPage = () => {
 
   useEffect(() => {
     getCollections();
+    return () => {
+      setSelectedTags({});
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
