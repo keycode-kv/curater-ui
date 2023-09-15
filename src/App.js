@@ -6,9 +6,10 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import SavedCardsPage from "./pages/saved";
 import ProfilePage from "./pages/profile";
+import ArchiveCardsPage from "./pages/archive";
 
-import './App.css';
-import CardView from './pages/card-view';
+import "./App.css";
+import CardView from "./pages/card-view";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="*" element={<Home />} />
         <Route path="saved" element={<SavedCardsPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="archive" element={<ArchiveCardsPage />} />
       </Routes>
     </ErrorBoundary>
   );

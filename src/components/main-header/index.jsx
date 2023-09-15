@@ -37,10 +37,10 @@ const HeaderWrapperSx = {
 
 const DrawerSx = {
   width: "250px",
-  background: "#D39CFF",
+  background: "#C5B3D4",
 };
 
-const GoPremiumSx = {
+const GoPremiumButtonSx = {
   position: "absolute",
   bottom: 28,
   left: 35,
@@ -49,7 +49,7 @@ const GoPremiumSx = {
   padding: "8px 28px",
   width: "180px",
   textTransform: "none",
-  color: "#D39CFF",
+  color: "#C5B3D4",
   fontSize: "14px",
   fontWeight: 400,
   ":hover": {
@@ -137,7 +137,7 @@ const MainHeader = () => {
               {pathname === "/saved" && <SelectLine />}
             </div>
           </>
-          <Button sx={GoPremiumSx}>
+          <Button sx={GoPremiumButtonSx}>
             <UpgradeIcon className={classes.mr6} />
             Go Premium
           </Button>

@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     boxShadow: "7px 7px 0px 0px rgba(211, 156, 255, 0.25)",
     marginBottom: "24px",
     padding: "24px",
-    touchAction: 'none'
+    touchAction: "none",
   },
   header: {
     color: "#414141",
@@ -82,7 +82,7 @@ const useStyles = makeStyles({
 const MainCard = ({ item, isMainCard }) => {
   const classes = useStyles();
   return (
-    <Grid className={classes.card} xs={12} md={6} lg={4} spacing={2}>
+    <Grid container className={classes.card} xs={12} md={6} lg={4}>
       <div className={classes.header}>{item.title}</div>
       <div className={classes.sourceText}>~{item.source_email}</div>
       {isMainCard && (
