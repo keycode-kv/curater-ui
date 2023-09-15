@@ -82,7 +82,7 @@ const useStyles = makeStyles({
 const MainCard = ({ item, isMainCard }) => {
   const classes = useStyles();
   return (
-    <Grid container className={classes.card} xs={12} md={6} lg={4}>
+    <Grid className={classes.card} xs={12} md={6} lg={4}>
       <div className={classes.header}>{item.title}</div>
       <div className={classes.sourceText}>~{item.source_email}</div>
       {isMainCard && (
