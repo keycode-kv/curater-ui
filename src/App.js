@@ -2,7 +2,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Route, Routes } from 'react-router-dom';
 
 import Card from './pages/card';
-import Home from './pages/home';
+import Home from './pages/home-2';
 import Login from './pages/login';
 
 import './App.css';
