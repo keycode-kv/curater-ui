@@ -44,9 +44,9 @@ const useStyles = makeStyles({
   },
   contentText: {
     color: "#414141",
-    fontSize: "20px",
+    fontSize: "14px",
     fontWeight: 400,
-    lineHeight: "23px",
+    lineHeight: "16px",
     paddingTop: "16px",
   },
   iconWrapper: {
@@ -89,7 +89,7 @@ const MainCard = ({ item, isMainCard }) => {
       {isMainCard && (
         <>
           <div className={classes.durationtext}>{item.duration} min</div>
-          <div className={classes.contentText}>{item.content}</div>
+          <div className={classes.contentText}>{item.summary}</div>
         </>
       )}
       <div className={classes.iconWrapper}>

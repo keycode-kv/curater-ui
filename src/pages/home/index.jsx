@@ -16,7 +16,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: '28px 20px'
+    padding: '0 20px',
+    marginTop: 12
   },
 });
 
@@ -52,7 +53,9 @@ const Home = () => {
   return (
     <Box
       sx={{
-        height: "100vh",
+        maxHeight: "100vh",
+        minHeight: "100vh",
+        overflow: 'hidden'
       }}
     >
       <MainHeader isFilterVisible={false} />
