@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 
-import {ReactComponent as  EmptyListSplash} from '../../assets/empty-list-splash.svg';
+import {ReactComponent as  EmptyListSplash} from 'assets/empty-list-splash.svg';
 
 const useStyles = makeStyles({
     imageContainer: {
@@ -14,7 +14,8 @@ const useStyles = makeStyles({
       fontSize: '28px',
       fontStyle: 'italic',
       fontWeight: 300,
-      textAlign: 'center'
+      textAlign: 'center',
+      marginTop: '63px'
     },
     setupMailAction: {
       fontWeight: 400,
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 export default function EmptyStack() {
   const classes = useStyles();
   const handleNavigateToSetupMail = () => {
+    // TODO: Handle navigation
     console.log("handle navigation here")
   };
   return (

@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     boxShadow: "7px 7px 0px 0px rgba(211, 156, 255, 0.25)",
     marginBottom: "24px",
     padding: "24px",
+    touchAction: 'none'
   },
   header: {
     color: "#414141",

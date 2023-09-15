@@ -11,7 +11,6 @@ const LoginPage = () => {
         manual: true,
         onSuccess: result => {
           setUser(result.uid);
-          console.log(result);
         },
         onError: e => {
           console.log(e);
