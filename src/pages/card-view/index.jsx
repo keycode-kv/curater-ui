@@ -62,7 +62,7 @@ const MobileCardView = ({
     <div className={classes.container}>
       <div className={classes.header}>
         <IconButton
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/', { replace: true})}
         >
           <CloseIcon sx={{ color: "#414141" }} />
         </IconButton>

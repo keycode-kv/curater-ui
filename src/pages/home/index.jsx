@@ -11,7 +11,7 @@ import { useCardsStore } from "stores/cards";
 
 const useStyles = makeStyles({
   container: {
-    height: `calc(100vh - 40px)`,
+    height: `calc(100vh - 80px)`,
     display: "flex",
     flexGrow: "1",
     flexDirection: "column",
