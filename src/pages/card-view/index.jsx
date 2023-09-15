@@ -37,6 +37,9 @@ const btnStyles = {
   textTransform: "capitalize",
   paddingLeft: "24px",
   paddingRight: "24px",
+  ':hover': {
+    background: '#e7cbfd',
+  }
 };
 
 const MobileCardView = ({
@@ -77,7 +80,7 @@ const MobileCardView = ({
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <IconButton onClick={() => navigate("/", { replace: true })}>
+        <IconButton onClick={() => navigate(-1, { replace: true })}>
           <CloseIcon sx={{ color: "#414141" }} />
         </IconButton>
         <CuratorLogoDarkIcon />
