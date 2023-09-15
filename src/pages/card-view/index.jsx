@@ -1,10 +1,10 @@
-import { Button, Grid, Hidden, Rating } from "@mui/material";
+import { Button, Grid, Hidden, IconButton, Rating } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CloseIcon from "@mui/icons-material/Close";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { ReactComponent as StarIcon } from "../../assets/rating-star.svg";
 import { ReactComponent as CuratorLogoDarkIcon } from "../../assets/curater-logo-dark.svg";
 import dummyData from "./dummy-data";
@@ -20,11 +20,16 @@ const btnStyles = {
 };
 
 const MobileCardView = ({ card, comments }) => {
+  const navigate = useNavigate();
   const classes = useMobileCardViewStyles();
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <CloseIcon sx={{ color: "#414141" }} />
+        <IconButton
+          onClick={() => navigate(-1)}
+        >
+          <CloseIcon sx={{ color: "#414141" }} />
+        </IconButton>
         <CuratorLogoDarkIcon />
         <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
       </div>
