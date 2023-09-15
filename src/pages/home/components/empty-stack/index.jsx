@@ -8,18 +8,17 @@ import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles({
     imageContainer: {
-     maxWidth: '100%'
+     width: '270px'
     },
     emptyText: {
       color: '#F0F0F0',
-      fontSize: '22px',
+      fontSize: '16px',
       fontStyle: 'italic',
-      fontWeight: 300,
       textAlign: 'center',
-      marginTop: '63px'
+      marginTop: '20px'
     },
     setupMailAction: {
-      fontWeight: 400,
+      fontWeight: 500,
       textDecorationLine: 'underline'
     },
 
@@ -28,16 +27,18 @@ const useStyles = makeStyles({
 export default function EmptyStack() {
   const classes = useStyles();
   const navigate = useNavigate();
+
   const handleNavigateToSetupMail = () => {
     navigate('/set-up');
   };
+
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        padding: '40px'
       }}
     >
       <EmptyListSplash className={classes.imageContainer} />
