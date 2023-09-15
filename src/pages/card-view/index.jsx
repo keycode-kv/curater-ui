@@ -1,22 +1,22 @@
-import { Button, Grid, Hidden, Rating } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import CloseIcon from '@mui/icons-material/Close';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import { makeStyles } from '@mui/styles';
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { Button, Grid, Hidden, Rating } from "@mui/material";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import CloseIcon from "@mui/icons-material/Close";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import { makeStyles } from "@mui/styles";
+import React, { useState } from "react";
+import { useParams } from "react-router";
 import { ReactComponent as StarIcon } from "../../assets/rating-star.svg";
 import { ReactComponent as CuratorLogoDarkIcon } from "../../assets/curater-logo-dark.svg";
-import dummyData from './dummy-data';
-import { formatTimestamp } from '../../utils/datetime-utils';
+import dummyData from "./dummy-data";
+import { formatTimestamp } from "../../utils/datetime-utils";
 
 const btnStyles = {
   borderRadius: 56,
-  backgroundColor: '#e7cbfd',
-  color: '#414141',
-  textTransform: 'capitalize',
-  paddingLeft: '24px',
-  paddingRight: '24px',
+  backgroundColor: "#e7cbfd",
+  color: "#414141",
+  textTransform: "capitalize",
+  paddingLeft: "24px",
+  paddingRight: "24px",
 };
 
 const MobileCardView = ({ card, comments }) => {
@@ -24,16 +24,17 @@ const MobileCardView = ({ card, comments }) => {
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <CloseIcon sx={{ color: '#414141' }} />
+        <CloseIcon sx={{ color: "#414141" }} />
         <CuratorLogoDarkIcon />
-        <BookmarkBorderIcon sx={{ color: '#4E157A' }} />
+        <BookmarkBorderIcon sx={{ color: "#4E157A" }} />
       </div>
       <div className={classes.cardContent}>
-        <div className={classes.cardContentHeader}>
-          {card.title}
-        </div>
+        <div className={classes.cardContentHeader}>{card.title}</div>
         <div className={classes.cardSource}>{card.source}</div>
-        <div className={classes.cardBody} dangerouslySetInnerHTML={{ __html: card.content }} />
+        <div
+          className={classes.cardBody}
+          dangerouslySetInnerHTML={{ __html: card.content }}
+        />
       </div>
       <div className={classes.rating}>
         <Rating
@@ -42,13 +43,18 @@ const MobileCardView = ({ card, comments }) => {
           onChange={(event, newValue) => {
             console.log(newValue);
           }}
-          icon={<StarIcon fill='#D39CFF' />}
+          icon={<StarIcon fill="#D39CFF" />}
           emptyIcon={<StarIcon />}
         />
         <div className={classes.ratingText}>Give your rating</div>
       </div>
       <div className={classes.archiveBtnContainer}>
-        <Button disableElevation sx={btnStyles} variant="contained" startIcon={<ArchiveOutlinedIcon fill="#414141" />}>
+        <Button
+          disableElevation
+          sx={btnStyles}
+          variant="contained"
+          startIcon={<ArchiveOutlinedIcon fill="#414141" />}
+        >
           Archive
         </Button>
       </div>
@@ -59,34 +65,28 @@ const MobileCardView = ({ card, comments }) => {
             <div style={{ marginBottom: 12 }}>
               <div className={classes.commentHead}>
                 <div className={classes.commentUser}>{comment.user}</div>
-                <div className={classes.commentedAt}>&nbsp;| {formatTimestamp(comment.commented_at)}</div>
+                <div className={classes.commentedAt}>
+                  &nbsp;| {formatTimestamp(comment.commented_at)}
+                </div>
               </div>
-              <div className={classes.commentBody}>
-                {comment.content}
-              </div>
+              <div className={classes.commentBody}>{comment.content}</div>
             </div>
           ))}
         </div>
-        <div className={classes.commentBox}>
-          
-        </div>
+        <div className={classes.commentBox}></div>
       </div>
     </div>
   );
-}
+};
 
 const DesktopCardView = ({ card, comments }) => {
   const classes = useDesktopCardViewStyles();
-  return (
-    <Grid className={classes.container}>
-      Card view
-    </Grid>
-  );
-}
+  return <Grid className={classes.container}>Card view</Grid>;
+};
 
 const CardView = () => {
   const { cardId } = useParams();
-  console.log('cardId', cardId);
+  console.log("cardId", cardId);
   const [comments, setComments] = useState(dummyData.comments);
   const [card, setCard] = useState(dummyData.card);
   return (
@@ -102,38 +102,38 @@ const CardView = () => {
       </Hidden>
     </>
   );
-}
+};
 
 const useDesktopCardViewStyles = makeStyles({
   container: {
     height: "80vh",
-    width: '80%',
-    margin: 'auto',
+    width: "80%",
+    margin: "auto",
     marginTop: 50,
     borderRadius: 30,
-    border: '5px solid var(--Dark-Purple, #4E157A)',
-    background: 'var(--White, #FAFAFA)',
+    border: "5px solid var(--Dark-Purple, #4E157A)",
+    background: "var(--White, #FAFAFA)",
     /* Block Shadow */
-    boxShadow: '15px 15px 0px 0px rgba(211, 156, 255, 0.25)',
-  }
+    boxShadow: "15px 15px 0px 0px rgba(211, 156, 255, 0.25)",
+  },
 });
 
 const useMobileCardViewStyles = makeStyles({
   container: {
-    minHeight: '100vh',
+    minHeight: "100vh",
     // width: '100%',
-    background: 'var(--White, #FAFAFA)',
-    padding: '50px 36px',
+    background: "var(--White, #FAFAFA)",
+    padding: "50px 36px",
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     height: 50,
   },
   cardContent: {
     marginTop: 32,
-    color: '#414141',
+    color: "#414141",
   },
   cardContentHeader: {
     // fontFamily: 'Roboto',
@@ -149,21 +149,21 @@ const useMobileCardViewStyles = makeStyles({
   cardBody: {
     // fontFamily: 'Roboto',
     fontSize: 18,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     fontWeight: 400,
     marginTop: 10,
     // maxHeight: 400,
-    overflow: 'auto',
+    overflow: "auto",
   },
   rating: {
     marginTop: 16,
-    display: 'flex',
-    alignItems: 'center'
+    display: "flex",
+    alignItems: "center",
   },
   ratingText: {
-    color: '#070707',
-    fontStyle: 'italic',
-    fontWeight: 'normal',
+    color: "#070707",
+    fontStyle: "italic",
+    fontWeight: "normal",
     fontSize: 16,
     opacity: 0.5,
     marginLeft: 6,
@@ -176,9 +176,9 @@ const useMobileCardViewStyles = makeStyles({
   },
   commentHeader: {
     fontSize: 22,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     fontWeight: 500,
-    color: '#414141',
+    color: "#414141",
   },
   comments: {
     marginTop: 10,
@@ -188,26 +188,26 @@ const useMobileCardViewStyles = makeStyles({
     marginTop: 10,
   },
   commentHead: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   commentUser: {
-    color: '#4E157A',
+    color: "#4E157A",
     opacity: 0.97,
     fontSize: 18,
   },
   commentedAt: {
-    color: '#414141',
+    color: "#414141",
     opacity: 0.5,
     fontSize: 16,
     fontWeight: 300,
   },
   commentBody: {
-    fontStyle: 'italic',
+    fontStyle: "italic",
     fontSize: 16,
     fontWeight: 300,
     marginTop: 8,
-  }
+  },
 });
 
 export default CardView;
