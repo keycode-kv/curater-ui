@@ -6,6 +6,8 @@ import { makeStyles } from "@mui/styles";
 import SetupCard from './set-up-card';
 import CopyTextBox from './copy-text-box';
 
+import Carousel from 'components/carousel';
+
 import { ReactComponent as CuraterLogo } from "../../assets/curater_logo_dark.svg";
 import { ReactComponent as SearchingLooking } from "../../assets/searching-looking.svg";
 import { ReactComponent as WorkflowTeamWork } from "../../assets/workflow-team-work.svg";
@@ -22,15 +24,14 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   logo: {
-    marginTop: '60px',
+    marginTop: '40px',
   },
   note: {
     color: '#F0F0F0',
-    fontSize: '28px',
-    marginTop: '20px',
-    marginBottom: '20px',
+    fontSize: '20px',
     fontStyle: 'italic',
-    fontWeight: 300
+    fontWeight: 300,
+    margin: '40px 30px'
   },
   contentWrapper: {
     width: "100%",
@@ -45,6 +46,28 @@ const useStyles = makeStyles({
 
 export default function SetupPage() {
   const classes = useStyles();
+
+  const carousalItems = [
+    <SetupCard
+      image={<SearchingLooking />}
+      content="Lorem ipsum dolor sit amet consectetur. Iaculis consequat viverra."
+    />,
+    <SetupCard
+      image={<WorkflowTeamWork />}
+      content="Lorem ipsum dolor sit amet consectetur. Iaculis consequat viverra."
+    />,
+    <SetupCard
+      image={
+        <div className={classes.copyTextBoxWrapper}>
+          <CopyTextBox
+            text="affefvevdwvdwvdwvdv@curater.inc"
+          />
+        </div>
+      }
+      content="Your redirection email."
+    />
+  ];
+
   return (
     <Box className={classes.container}>
       <Box className={classes.logo}>
@@ -53,14 +76,13 @@ export default function SetupPage() {
       <Box className={classes.note}>
         Thank you for choosing CuRater, just a small step before you dive in...
       </Box>
-
-
-
       <Box sx={{
-        display: { xs: 'none', md: 'block', lg: 'none' },
+        display: { xs: 'block', md: 'block', lg: 'none' },
         m: '8px'
       }}>
-        {/* TODO implement swipper */}
+        <Carousel
+          items={carousalItems}
+        />
       </Box>
 
       <Box sx={{
