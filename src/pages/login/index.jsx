@@ -12,6 +12,8 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import Typography from "@material-ui/core/Typography";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as CuraterLogo } from "../../assets/curater_logo_dark.svg";
+import { Box } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -145,7 +147,7 @@ const LoginPage = () => {
     onSuccess: (result) => {
       console.log("SignUp Success", result);
       localStorage.setItem("auth_token", result.token);
-      navigate("/");
+      navigate("/set-up");
     },
     onError: (e) => {
       console.log(e);
@@ -180,6 +182,9 @@ const LoginPage = () => {
 
   return (
     <div className={classes.root}>
+            <Box style={{position: 'absolute', top: '10%',right:'30%'}}>
+        <CuraterLogo width="180px" height="40px" />
+      </Box>
       <Grid container className={classes.container}>
         <Paper elevation={3} className={classes.paper}>
           <form className={classes.form}>
