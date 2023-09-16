@@ -78,7 +78,7 @@ export default function SetupPage() {
           <div style={{ paddingBottom: 12 }}>
             3. Copy and add the following address.
           </div>
-          <CopyTextBox text={redirectEmail} />
+          <CopyTextBox text="f175380ffd28a3f1ad96@cloudmailin.net" />
         </div>,
       ]}
     />,

@@ -5,7 +5,7 @@ const qs = require('qs');
 
 const apiClient = axios.create({
   timeout: 120000,
-  baseURL: 'http://192.168.2.255:8082',
+  baseURL: 'https://cbed-103-214-233-88.ngrok-free.app',
   withCredentials: false,
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });

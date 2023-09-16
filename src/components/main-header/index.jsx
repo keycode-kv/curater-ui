@@ -115,6 +115,10 @@ const MainHeader = ({ getCardsList, type, collection, search, isFilterVisible })
   const handleSavedClick = () => {
     navigate("/saved");
   };
+  
+  const handleLogout = () => {
+    navigate("/login");
+  };
 
   const handleChange = (checked, item) => {
     const newTags = { ...selectedTags, [item]: checked };
@@ -215,6 +219,14 @@ const MainHeader = ({ getCardsList, type, collection, search, isFilterVisible })
             >
               Saved
               {pathname === "/saved" && <SelectLine />}
+            </div>
+            <div
+              className={classes.optionWrapper}
+              onClick={handleLogout}
+              role="presentation"
+            >
+              Logout
+              {pathname === "/logout" && <SelectLine />}
             </div>
           </>
           <Button sx={GoPremiumButtonSx}>
