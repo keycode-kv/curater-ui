@@ -369,7 +369,7 @@ const useMobileCardViewStyles = makeStyles({
   cardBody: {
     overflowY: "auto",
     overflowX: "auto",
-    // marginTop: -80,
+    marginTop: -100,
   },
   rating: {
     marginTop: 16,
